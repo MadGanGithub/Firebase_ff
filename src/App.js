@@ -25,7 +25,7 @@ function App() {
        <Route path="/profile" element={<Profile/>}/>
        <Route path="/new" element={<Newquote/>}/>
        <Route path="/quotes" element={<Quotes/>}/>
-       <Route path="/order" element={<Order/>}/>
+       {/* <Route path="/order" element={<Order/>}/> */}
 
       </Routes>
     

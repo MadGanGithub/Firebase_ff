@@ -69,9 +69,9 @@ const Appbar = () => {
       <a className="link-secondary me-3 text-bg-dark" href="/quotes" style={{paddingLeft:30}}>
         My Quotes
       </a>
-      <a className="link-secondary me-3" href="/order" style={{paddingLeft:30}}>
+      {/* <a className="link-secondary me-3" href="/order" style={{paddingLeft:30}}>
         My Orders
-      </a>
+      </a> */}
       <a className="link-secondary me-3" href="/profile" style={{paddingLeft:30}}>
         Profile
       </a>

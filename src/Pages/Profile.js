@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom";
 import {useAuth, upload} from "../config/firebase.js";
 import {auth} from "../config/firebase.js";
+import avatar from "../assets/profile.png";
+import Country from "../components/Country.js";
 
 
 const Profile=()=>{
@@ -11,6 +13,7 @@ const Profile=()=>{
 
     const [photo, setPhoto] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [value,setValue]=useState(false);
     const [photoURL, setPhotoURL] = useState("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png");
 
 
@@ -74,40 +77,142 @@ const Profile=()=>{
 
     return(
         <div className="container">
-            <h3 className="title">Profile</h3>
-            <div className="card">
+            <h2 className="title">Account Settings</h2>
+            <div className="card shadow">
               <div className="card-body">
-              <form>
-                <img src={currentUser.photoURL} alt="profile" className="avatar" style={{height:50}}/>
-                <br></br>
-                <div className="input-group">
-                  <label className="input-group-text">Profile Picture:</label>
-                  <input type="file" onChange={handleChange}></input>
-                  <button disabled={loading || !photo} onClick={handleClick}>Upload</button>
-                </div> 
-
-                <br></br>
-
-                <div className="input-group">
-                  <label className="input-group-text">Name: </label>
-                  <input readOnly value={currentUser.displayName}></input>
-                </div>
-
-                <br></br>
-                <div className="input-group">
-                  <label className="input-group-text">Email: </label>
-                  <input readOnly value={currentUser.email}></input>
-                </div>
-                <br></br>
-                <div className="input-group">
-                  <label className="input-group-text">Job Title: </label>
-                  <input value={job} onChange={(e)=>{setJob(e.target.value)}}></input>
-                </div>
                 
+                <div className="container">
+                  <div className="row">
+                    <div className="col">
+                    <img src={avatar} alt="profile" className="avatar" style={{height:50,borderRadius:10}}/>
+                    </div>
+                    
+                    <div className="col-11">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col" style={{color:"grey",fontSize:12}}>User ID: {currentUser.uid}</div>
+                        <div class="w-100"></div>
+                        <div class="col" style={{fontSize:20}}>{currentUser.displayName}</div>
+
+                      </div>
+                    </div>
+                    </div>
+                </div>
+                <hr></hr>
+                </div>
+                <div className="container">
+                
+                    <div class="row">
+                      <div class="col-auto" >
+                      <div className="container">
+                         <div style={{color:"grey",fontSize:12}}>Full Name</div> 
+                         <div style={{fontSize:15}}>{currentUser.displayName}</div>
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                      <div className="container">
+                      <div style={{color:"grey",fontSize:12}}>Job Title</div> 
+                      <div style={{fontSize:15}}>Developer</div>
+                        </div>
+                      </div>
+                    </div>
+                    <br></br>
+
+                  <div className="row">
+                      <div className="col-auto" >
+                        <div className="container">
+                        <div style={{color:"grey",fontSize:12}}>Phone Number</div> 
+                        <div style={{fontSize:15}}>9488622567</div>
+                        </div>
+                      </div>
+                      <div className="col-auto" >
+                        <div className="container">
+                        <div style={{color:"grey",fontSize:12}}>Email</div> 
+                        <div style={{fontSize:15}}>{currentUser.email}</div>
+                          </div>
+                      </div>
+                      <div className="col-auto" >
+                        <div className="container">
+                        <div style={{color:"grey",fontSize:12}}>Language</div> 
+                            <div style={{fontSize:15}}>English</div>
+                            
+                          </div>
+                      </div>
+                  </div>
+                  <br></br>
+
+                    <div className="row">
+                      <div className="col">
+                        <button className="btn" style={{width:400,backgroundColor:"#0096FF",color:'white'}}>Edit Profile details</button>
+                      </div>
+                      <div className="col">
+                        <a href="#">Reset Password</a>
+                      </div>
+                    </div>
 
 
-            </form>
+                </div>
+                <br></br>
+
               </div>
+            </div>
+            <br/>
+            <div className="card shadow" >
+              <div className="card body" style={{padding:30}}>
+                <div className="container">
+                  <div style={{fontWeight:"bold"}}>Shipping Address</div>
+                  <br/>
+                  <form>
+                    <label>Organization Name:</label>
+                    <br/>
+                    <input type="text" placeholder="Name" className="form-control"></input>
+                    <br/>
+                    <div className="row">
+                      <div className="col">
+                        <label>Contact Person(Full Name)</label>
+                        <br/>
+                        <input type="text" placeholder="Enter Full Name" className="form-control"></input>
+                      </div>
+                      <div className="col">
+                        <label>Contact phone</label>
+                        <br/>
+                        <input type="tel" className="form-control"></input>
+                      </div>
+                    </div>
+                    <br/>
+                    <div className="row">
+                      <div className="col">
+                        <label>Country</label>
+                        <br/>
+                        <Country/>
+                      </div>
+                      <div className="col">
+                        <label>Postcode:</label>
+                        <br/>
+                        <input type="text" placeholder="00000" className="form-control"></input>
+                      </div>
+                    </div>
+                    <br/>
+                    <div className="row">
+                      <div className="col">
+                        <label>City:</label>
+                        <br/>
+                        <input type="text" placeholder="Enter" className="form-control"></input>
+                      </div>
+                      <div className="col">
+                        <label>Address:</label>
+                        <br/>
+                        <input type="text" placeholder="Street,house,office,appt.etc" className="form-control"></input>
+                      </div>
+                    </div>
+                    <br/>
+                    <div className="row" >
+                      <div className="col-4 offset-9"><button style={{width:200,backgroundColor:"#0096FF",color:"white"}}>Save Changes</button></div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
             </div>
 
 

@@ -54,14 +54,14 @@ export async function upload(file, currentUser, setLoading) {
 }
 
 export async function uploadQuote(file, currentUser, setLoading) {
-  const fileRef = ref(storage, `/images/${currentUser.uid}/quotes/${file.name+v4()}.png`);
+  const fileRef = ref(storage, `/${currentUser.uid}/quotes/${file.name}`);
 
   setLoading(true);
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
 
-  updateProfile(currentUser, {photoURL});
+ // updateProfile(currentUser, {photoURL});
   
   setLoading(false);
   alert("Uploaded file!");
@@ -75,7 +75,7 @@ export async function uploadPurchase(file, currentUser, setLoading) {
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
 
-  updateProfile(currentUser, {photoURL});
+  //updateProfile(currentUser, {photoURL});
   
   setLoading(false);
   alert("Uploaded file!");

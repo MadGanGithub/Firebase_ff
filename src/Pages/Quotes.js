@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import { getStorage, ref, listAll,getDownloadURL } from "firebase/storage";
 import { useAuth,uploadPurchase} from '../config/firebase.js';
+import {StlViewer} from "react-stl-viewer";
 
 const Quotes = () => {
 
@@ -11,15 +12,15 @@ const Quotes = () => {
   const [loading, setLoading] = useState(false)
 
       // Create a reference under which you want to list
-      const listRef = ref(storage, `/images/${currentUser.uid}/quotes/`);
+      const listRef = ref(storage, `${currentUser.uid}/quotes/`);
 
+
+      
   useEffect(() => {
-    const func=async()=>{
-      try {
         // onAuthStateChanged(auth, (user) => {
         //   if (user) {
         //       console.log("madhav")
-        //       const uid = user.uid;
+        //       const uid = user.uid; 
         //       console.log(uid+" Logged in currently")
         //       // ...
         //   } else {
@@ -27,27 +28,22 @@ const Quotes = () => {
         //       navigate("/signin")
         //   }
         //   });
-
-            await listAll(listRef)
+  
+            listAll(listRef)
             .then((res) => {
               console.log(res)
               res.items.forEach((item)=>{
+                console.log(item)
+                
                 getDownloadURL(item).then((url)=>{
-                  setImageList((prev=>[...prev,url]))
+                  return setImageList((prev=>[...prev,url]))
                 })
-              })
+              })  
+       
+            })
       
-            }).catch((error) => {
-              console.log(error)
-            });
-    
-      } catch (e) {
-          console.error(e);
-      } 
-    }
-    func() 
-
-},[]); 
+            },[]);
+      
 
 const orderProduct=(index)=>{
   const listItems=imageList.map((item)=>item.index===index?{...item}:{item})
@@ -66,20 +62,24 @@ const orderProduct=(index)=>{
           <hr></hr>
           <div className='card-body'>
       {imageList.map((url,index)=>{
-        return(
+        return(   
         <div className='container' key={index}>
           <div className='card' >
-            <div className='card'>
-              {index}:
+            <div className='card'> 
               <div className='card-img-top'>
-            <img src={url}  style={{height:20}}/>
+
+              <StlViewer
+                  orbitControls   
+                  shadows
+                  url={"https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"} 
+              />
             </div>
             <div className='input-group'>
             <button className='btn-info' type='image' onClick={()=>orderProduct(index)}>Order</button>
             </div>      
-        </div>        
+        </div>         
         </div>  
-        </div> 
+        </div>  
         )
         
       })}

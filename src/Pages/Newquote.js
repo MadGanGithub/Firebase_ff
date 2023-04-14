@@ -5,6 +5,7 @@ import { useEffect,useState } from "react";
 import {useAuth, uploadQuote} from "../config/firebase.js";
 import { getStorage, ref,listAll } from "firebase/storage";
 import { v4 } from "uuid";
+import quoteImage from "../assets/quote.png";
 import add from "../assets/add.png";
 
 
@@ -66,13 +67,39 @@ const Dashboard=()=>{
       <div className="card-body">
 
       <form >
-        <input required type="file" style={{backgroundColor:"#0E6AED",color:"white"}} multiple onChange={(e)=>{setPhoto(e.target.files[0])}}/>
+        <input required type="file" accept=".stl" style={{backgroundColor:"#0E6AED",color:"white"}} multiple onChange={(e)=>{setPhoto(e.target.files[0])}}/>
         </form>
         <br></br>
         <button disabled={loading || !photo} onClick={handleClick} style={{width:'100%',backgroundColor:"#0E6AED",color:"white"}}>Add Quote</button>
     </div>
     </div>
-    </div>
+    <br/>
+
+    {/* <div class="card ">
+    
+        <div class="media-body ">
+        <img src={quoteImage} class="mr-3" alt="Quote image"/>
+          <h5 class="mt-0"><a href="#" class="btn stretched-link">Drag & Drop Your Designs</a> Or Browse</h5>
+          <h6 class="mt-0">You can upload multiple files at once</h6>
+          <p>Instant quote: STEP, STP, SLDPRT, STL, SAT, 3DXML, 3MF, PRT, IPT, CATPART, X_T, PTC, X_B, DXF</p>
+          <p>Manual quote: DWS, DWF, DWG, PDF</p>
+          </div>
+        
+  
+  
+</div> */}
+
+{/* <div className="card shadow" style={{borderBlockStyle:"dashed",zIndex:3,position:"relative"}}>
+  <div style={{width:30}}>
+  <img src={quoteImage} className="card-img-top" alt="..."/>
+  </div>
+  <div className="card-body">
+    <h5 className="card-title">Card with stretched link</h5>
+
+    <a href="#" class="btn btn-primary stretched-link" style={{zIndex:3,position:"relative"}}>dfgdfgdfgdg</a>
+  </div>
+</div> */}
+     </div>
     )
   }
 
