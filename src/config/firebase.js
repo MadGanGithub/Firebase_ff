@@ -20,7 +20,7 @@ const firebaseConfig = {
   };
 
 //Settings
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth=getAuth(app)
 export const analytics = getAnalytics(app);
 export const storage=getStorage(app)
@@ -80,3 +80,6 @@ export async function uploadPurchase(file, currentUser, setLoading) {
   setLoading(false);
   alert("Uploaded file!");
 }
+
+
+

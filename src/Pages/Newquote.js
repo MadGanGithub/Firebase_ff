@@ -7,10 +7,13 @@ import { getStorage, ref,listAll } from "firebase/storage";
 import { v4 } from "uuid";
 import quoteImage from "../assets/quote.png";
 import add from "../assets/add.png";
-
+import "./Newquote.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCloudUploadAlt, faLock } from '@fortawesome/free-solid-svg-icons'
 
 
 const Dashboard=()=>{
+
     const currentUser=useAuth()
     const navigate=useNavigate()
     const storage = getStorage();
@@ -56,15 +59,17 @@ const Dashboard=()=>{
         }
       }, [currentUser])
 
-
+      if(document.getElementById('images')==""){
+        console.log("first")
+      }
     return(
     <div className="container" style={{textAlign:"center"}}>
 
       <h5 className="title">Create a New Quote</h5>
 
-      <div className="card" style={{padding:"5%"}}>
+      <div className="card" style={{padding:"5%",borderBlockStyle:"dashed"}}>
         <div className="card-img-top"><img src={add}></img></div>
-      <div className="card-body">
+        <div className="card-body">
 
       <form >
         <input required type="file" accept=".stl" style={{backgroundColor:"#0E6AED",color:"white"}} multiple onChange={(e)=>{setPhoto(e.target.files[0])}}/>
@@ -75,30 +80,21 @@ const Dashboard=()=>{
     </div>
     <br/>
 
-    {/* <div class="card ">
-    
-        <div class="media-body ">
-        <img src={quoteImage} class="mr-3" alt="Quote image"/>
-          <h5 class="mt-0"><a href="#" class="btn stretched-link">Drag & Drop Your Designs</a> Or Browse</h5>
-          <h6 class="mt-0">You can upload multiple files at once</h6>
-          <p>Instant quote: STEP, STP, SLDPRT, STL, SAT, 3DXML, 3MF, PRT, IPT, CATPART, X_T, PTC, X_B, DXF</p>
-          <p>Manual quote: DWS, DWF, DWG, PDF</p>
-          </div>
-        
-  
-  
-</div> */}
+  <label htmlFor="images" className="card drop-container">
 
-{/* <div className="card shadow" style={{borderBlockStyle:"dashed",zIndex:3,position:"relative"}}>
-  <div style={{width:30}}>
-  <img src={quoteImage} className="card-img-top" alt="..."/>
-  </div>
-  <div className="card-body">
-    <h5 className="card-title">Card with stretched link</h5>
+    <FontAwesomeIcon className="fa-4x" icon={faCloudUploadAlt}/>
+    <h5 class="mt-0"><a href="#">Drag & Drop Your Designs</a> Or Browse</h5>
+    <h6 class="mt-0">You can upload multiple files at once</h6>
+    <p>Instant quote: STEP, STP, SLDPRT, STL, SAT, 3DXML, 3MF, PRT, IPT, CATPART, X_T, PTC, X_B, DXF
+    Manual quote: DWS, DWF, DWG, PDF</p>
+    <form method="post" action="#" id="#">
+    <input type="file" id="images" className="images-files" accept=".stl" required/>
 
-    <a href="#" class="btn btn-primary stretched-link" style={{zIndex:3,position:"relative"}}>dfgdfgdfgdg</a>
-  </div>
-</div> */}
+    </form>
+    <p><FontAwesomeIcon icon={faLock}/> All uploads are secure and confidential</p>
+  </label>
+
+
      </div>
     )
   }

@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { getStorage, ref, listAll,getDownloadURL } from "firebase/storage";
+import { getStorage, ref, list,getDownloadURL } from "firebase/storage";
 import { useAuth,uploadPurchase} from '../config/firebase.js';
 import {StlViewer} from "react-stl-viewer";
 
@@ -11,38 +11,70 @@ const Quotes = () => {
   const currentUser=useAuth()  
   const [loading, setLoading] = useState(false)
 
+  const listRef = ref(storage, `${currentUser.uid}/quotes/`);
+
+  const getImages = async () => {
+    try {
+      setLoading(true)
+      const imagesListData = await list(listRef);
+      console.log(imagesListData)
+      imagesListData.items.forEach(item => {
+        getDownloadURL(item).then(url => setImageList(prev => [...prev,url]));
+     })
+    } catch(err){
+      alert(err.message);
+    }
+  }
+
       // Create a reference under which you want to list
-      const listRef = ref(storage, `${currentUser.uid}/quotes/`);
 
+      // const [snapshot, loadings, error] = useDocument(listRef);
+      // console.log(snapshot)
+      // console.log(loadings)  
 
-      
-  useEffect(() => {
-        // onAuthStateChanged(auth, (user) => {
-        //   if (user) {
-        //       console.log("madhav")
-        //       const uid = user.uid; 
-        //       console.log(uid+" Logged in currently")
-        //       // ...
-        //   } else {
-        //       console.log("No token found")
-        //       navigate("/signin")
-        //   }
-        //   });
-  
-            listAll(listRef)
-            .then((res) => {
-              console.log(res)
-              res.items.forEach((item)=>{
-                console.log(item)
-                
-                getDownloadURL(item).then((url)=>{
-                  return setImageList((prev=>[...prev,url]))
-                })
-              })  
-       
-            })
-      
-            },[]);
+      useEffect(() => {
+        getImages();
+      },[])
+
+  // useEffect(() => {
+
+  //     listAll(listRef)
+  //     .then((res) => {
+  //       res.prefixes.forEach((folderRef) => { 
+
+  //         console.log(folderRef)
+  //       });
+  //       res.items.forEach((item)=>{
+  //         console.log(item+"shit")
+          
+  //         getDownloadURL(item).then((url)=>{
+  //           setImageList((prev=>[...prev,url]))
+  //         }) 
+  //       })  
+ 
+  //     })
+    
+  // //   console.log("first")
+  // //   function getAllVenues(){
+  // //     console.log("sec") 
+  // //     listAll(listRef)
+  // //     .then((res) => {
+  // //       res.prefixes.forEach((folderRef) => { 
+
+  // //         console.log(folderRef)
+  // //       });
+  // //       res.items.forEach((item)=>{
+  // //         console.log(item+"shit")
+          
+  // //         getDownloadURL(item).then((url)=>{
+  // //           setImageList((prev=>[...prev,url]))
+  // //         }) 
+  // //       })  
+ 
+  // //     })
+  // // }
+  // // getAllVenues()      
+  //           },[]);
       
 
 const orderProduct=(index)=>{
@@ -61,17 +93,17 @@ const orderProduct=(index)=>{
  
           <hr></hr>
           <div className='card-body'>
-      {imageList.map((url,index)=>{
+      {loading && imageList.map((url,index)=>{
         return(   
         <div className='container' key={index}>
           <div className='card' >
             <div className='card'> 
               <div className='card-img-top'>
-
+                {url.split('?')[0]} 
               <StlViewer
                   orbitControls   
                   shadows
-                  url={"https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"} 
+                  url={'"'+url+'"'} 
               />
             </div>
             <div className='input-group'>

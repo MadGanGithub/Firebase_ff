@@ -5,6 +5,8 @@ import {useAuth, upload} from "../config/firebase.js";
 import {auth} from "../config/firebase.js";
 import avatar from "../assets/profile.png";
 import Country from "../components/Country.js";
+import { getDatabase ,onValue,ref } from "firebase/database";
+import { useList } from 'react-firebase-hooks/database';
 
 
 const Profile=()=>{
@@ -12,14 +14,28 @@ const Profile=()=>{
     const currentUser = useAuth();
 
     const [photo, setPhoto] = useState(null);
+    const [jobTitle,setJobTitle]=useState("")
+    const [jobsTitle,setJobsTitle]=useState("")
     const [loading, setLoading] = useState(false);
     const [value,setValue]=useState(false);
+    const db=getDatabase();
     const [photoURL, setPhotoURL] = useState("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png");
 
+    const [snapshots, loadings, error] = useList(ref(db, 'users'));
+    var temp=""
+
+    snapshots.forEach((each)=>{ 
+      console.log("first")
+      var e=each.val()
+      if(currentUser.email==e.email){
+        temp=e.job_title
+        
+      }
+    })
 
 
     useEffect(()=>{
-
+      console.log("second")
       onAuthStateChanged(auth, (user) => {
           if (user) {
               const uid = user.uid;
@@ -30,50 +46,50 @@ const Profile=()=>{
               navigate("/signin")
           }
           });
+
+          setJobTitle(temp)
+
+          
+
+          // var reff=ref(db,"/users")
+      
+          // onValue(reff,(snapshot)=>{
+          //   const data=snapshot.val()
+          //   const keys=Object.keys(data)
+          //   var temp=""
+          //   // console.log(keys)
+          //   for(var i=0;i<keys.length;i++){
+          //     var each=keys[i]
+          //     if(currentUser.displayName==data[each].username){
+          //       temp=data[each].job_title
+          //     }
+            
+              
+          //   }
+          //   setJobTitle(temp)
+          // })
   },[])
 
-    function handleChange(e) {
-      if (e.target.files[0]) {
-        setPhoto(e.target.files[0])
+    // function handleChange(e) {
+    //   if (e.target.files[0]) {
+    //     setPhoto(e.target.files[0])
 
-      }
-    }
+    //   }
+    // }
   
-    function handleClick() {
-
-      updateProfile(auth.currentUser, {
-        photoURL: photoURL
-      }).then(() => {
-        console.log("Profile photo updated")
-      }).catch((error) => {
-
-        console.log(error)
-      });
-      upload(photo, currentUser, setLoading);
-    }
-  
-    useEffect(() => {
-      if (currentUser?.photoURL) {
-        setPhotoURL(photoURL);
-      }
-    }, [currentUser])
+    // useEffect(() => {
+    //   if (currentUser?.photoURL) {
+    //     setPhotoURL(photoURL);
+    //   }
+    // }, [currentUser])
     
     const [name,setName]=useState("User")
     const [job,setJob]=useState("")
+
+    const saveChanges=()=>{
+
+    }
     
-
-    //Description change
-    const jobChange=()=>{
-
-    updateProfile(auth.currentUser, {
-    displayJobTitle:job
-    }).then(() => {
-        console.log("Profile updated")
-    }).catch((error) => {
-        console.log(error)
-    });
-
-    } 
 
     return(
         <div className="container">
@@ -112,11 +128,11 @@ const Profile=()=>{
                       <div class="col-auto">
                       <div className="container">
                       <div style={{color:"grey",fontSize:12}}>Job Title</div> 
-                      <div style={{fontSize:15}}>Developer</div>
-                        </div>
+                      <div style={{fontSize:15}}>{temp}</div>
+                        </div>  
                       </div>
                     </div>
-                    <br></br>
+                    <br></br> 
 
                   <div className="row">
                       <div className="col-auto" >
@@ -162,21 +178,21 @@ const Profile=()=>{
                 <div className="container">
                   <div style={{fontWeight:"bold"}}>Shipping Address</div>
                   <br/>
-                  <form>
+                  <form onSubmit={saveChanges}>
                     <label>Organization Name:</label>
                     <br/>
-                    <input type="text" placeholder="Name" className="form-control"></input>
+                    <input type="text" placeholder="Name" className="form-control" required></input>
                     <br/>
                     <div className="row">
                       <div className="col">
                         <label>Contact Person(Full Name)</label>
                         <br/>
-                        <input type="text" placeholder="Enter Full Name" className="form-control"></input>
+                        <input type="text" placeholder="Enter Full Name" className="form-control" required></input>
                       </div>
                       <div className="col">
                         <label>Contact phone</label>
                         <br/>
-                        <input type="tel" className="form-control"></input>
+                        <input type="tel" className="form-control" required></input>
                       </div>
                     </div>
                     <br/>
@@ -189,7 +205,7 @@ const Profile=()=>{
                       <div className="col">
                         <label>Postcode:</label>
                         <br/>
-                        <input type="text" placeholder="00000" className="form-control"></input>
+                        <input type="text" placeholder="00000" className="form-control" required></input>
                       </div>
                     </div>
                     <br/>
@@ -197,17 +213,17 @@ const Profile=()=>{
                       <div className="col">
                         <label>City:</label>
                         <br/>
-                        <input type="text" placeholder="Enter" className="form-control"></input>
+                        <input type="text" placeholder="Enter" className="form-control" required></input>
                       </div>
                       <div className="col">
                         <label>Address:</label>
                         <br/>
-                        <input type="text" placeholder="Street,house,office,appt.etc" className="form-control"></input>
+                        <input type="text" placeholder="Street,house,office,appt.etc" className="form-control" required></input>
                       </div>
                     </div>
                     <br/>
                     <div className="row" >
-                      <div className="col-4 offset-9"><button style={{width:200,backgroundColor:"#0096FF",color:"white"}}>Save Changes</button></div>
+                      <div className="col-4 offset-9"><button style={{width:200,backgroundColor:"#0096FF",color:"white"}} type="submit">Save Changes</button></div>
                     </div>
                   </form>
                 </div>
