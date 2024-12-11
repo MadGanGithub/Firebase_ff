@@ -17,19 +17,19 @@ Authentication: JWT (JSON Web Tokens)
 ## Screenshots
 
 My Quotes Page
-![Quotes](public/Screenshot (84).png)
+![Quotes](/public/Screenshot (84).png)
 
 My Orders
-![Orders](public/Screenshot (74).png)
+![Orders](/public/Screenshot (74).png)
 
 My Profile
-![Profile](public/Screenshot (75).png)
+![Profile](/public/Screenshot (75).png)
 
 Account Settings 1
-![Account](public/Screenshot (85).png)
+![Account](/public/Screenshot (85).png)
 
 Account Settings 2
-![Account](public/Screenshot (86).png)
+![Account](/public/Screenshot (86).png)
 
 Image upload
-![Image](public/Screenshot (89).png)
+![Image](/public/Screenshot (89).png)
